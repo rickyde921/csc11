@@ -1,0 +1,67 @@
+/* 
+ * File:   main.cpp
+ * Author: KRONiKDesigns
+ *
+ * Created on September 29, 2015, 5:49 PM
+ */
+
+#include <cstdlib>
+#include <iostream>
+
+using namespace std;
+
+/*
+ * 
+ */
+int main(int argc, char** argv) {
+    
+    int R1 = 63; //Dividend set to 63
+    int R2 = 4; //Divisor set to 4
+    int R3 = R1; //Copies dividend into R3 to avoid altering original data
+    int R4 = R2; //Sets R4 to the original divisor and will be used to shift
+    int R5 = 0; //Initializes times shifted to 0
+    int R6 = 1; //R6 will be used to perform squaring operations
+    int R7 = 0; //will contain the divided answer
+   
+    while (R3 > R2)
+    {
+    while (R3 > R4) { //while the dividend is bigger than the shifted divisor
+    
+        R4 *= 2; //equivalent to Logical Shift Right
+        R5++; //Adds time shifted by 1
+    }
+    
+   if (R5 > 0) {
+    R4 /= 2; //LSL to make the shifted divisor smaller than dividend
+    R5--; //decrements the times shifted by 1 to account for unneeded shift
+    
+    R3 -= R4; //Subtracts the Mdivisor by max shifted dividend
+    
+    R4 = R2; //Reinitializes the shifted divisor to the original divisor
+    
+    for (int i =0; i< R5; i++) { //will loop number of times shifted
+        
+        R6 *= 2;
+    }
+    //cout<<"The current add on is "<<R6<<endl;
+    R7 += R6; //adds to final divided answer
+    
+    R6 = 1; //reinitializes to one to prepare for possible future shifts
+    R5 = 0; //Reinitializes times shifted to 0
+    
+   }
+   
+    }
+        
+    
+    
+    
+    cout<<"The final answer is "<<R7<<endl;
+    cout<<"The remainder is "<<R3<<endl;
+    
+
+    
+    
+    return 0;
+}
+

@@ -1,0 +1,861 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww25100\viewh12480\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 Project Writeup \
+\
+Introduction\
+	Title: Roulette\
+Roulette is a game in which a ball is thrown onto a spinning \
+wheel with 38 numbers (numbers 0-36, and 00). The game \
+also includes a table, which displays numbers 1-36 in a \
+specific format, with 0 and 00 apart from this format. The \
+format divides the table as follows.\
+\
+ 3  6  9 12   15 18 21 24   27 30 33 36          0\
+ 2  5  8 11   14 17 20 23   26 29 32 35\
+ 1  4  7 10   13 16 19 22   25 28 31 34	     00\
+\
+The user can then make a variety of bets. They go as follows\
+Single number: User can bet for a single number 1-36, 0, or 00\
+Even.Odd: User can bet if the number will be even or odd, \
+excluding 0 and 00\
+Color: The table has a unique color pattern, with 18 numbers \
+being red, and 18 being black. 0 and 00 are excluded in this\
+Box: a box contains 12 numbers and is how the table above \
+is separated. (1-12)(13-24)(25-36) again 0 and 00 are excluded\
+Column: A column contains 3 numbers for a total of 12. They \
+are read up to down eg(1-3)(4-6)(7-9)ect.\
+Row: A row contains 13 numbers, for a total of 3 rows. These\
+are the numbers read left to right on the table above. For \
+example, row 1 contains 1,4,7,10,13,16,19,22,25,28,31,34\
+once again 0 and 00 are excluded\
+\
+Those are the 6 different types of bet. Some bets are obviously\
+harder to obtain, therefore, payback ratios are different. They \
+are as follows:\
+Single Number: X36 initial bet\
+Even/Odd: X2 initial bet\
+Color: X2 initial bet\
+Box: X3 initial bet\
+Column: X12 initial bet\
+Row: X3 initial bet\
+\
+Summary\
+\
+	Project Size: 600+ lines\
+	Number of Variables: about 20 (includes global variables\
+	    such as string messages and user input, as well as 2\
+	    variables on the stack)\
+	Number of Methods: 3\
+\
+This project was not extremely challenging. Most everything was \
+pretty straight forward, The logic was easy because I have \
+previously coded a roulette game in csc5. \
+Overall, the game took about 5 days, with the final two days \
+having worked for at least 12 hours each.\
+One thing that got me stuck for about 2 hours was forgetting that \
+printf and scan mess with registers r0-r3 even if they were not used.\
+It kept altering my r3 and I was unaware of it.\
+One thing that I found interesting to do is use the stack for variables.\
+My spin_wheel function needed to use more than the first four \
+registers. And rather than just use others such as I did in my \
+midterm, I simply pushed the important values onto the stack, \
+then discarded them after they were no longer needed. However,\
+the point of no longer needing them varies on your bet type, so I\
+have multiple places the stack discards values throughout the \
+function, which Im not sure is \'93okay\'94\
+ \
+Description\
+\
+This program is a rather simple version of real roulette. In order\
+to make the program more simple, I have only allowed for one \
+bet type to be chosen at any one time. Normal roulette, you \
+could bet on color, a single number, if its odd, a specific row, ect.\
+The logic of the entire program in simple terms goes as follows:\
+\
+-Let the user chose a bet type (single number, color, etc)\
+-Let the user chose what value to bet on (23, odd, black, row2, etc)\
+-Let the user chose how many chips to bet \
+***All thee statements above are checked for invalid input***\
+-Randomize a number between 0 and 37 (37 = 00)\
+-call spin_wheel function\
+\
+Spin_wheel Function-\
+-If user chose Single Number, compare if number bet is equal\
+to number rolled. If so, user wins X36, if not, user wins 0\
+-If user chose Even/Odd, com[ute is number rolled is even\
+or odd. If user bet on same option, win = X2, else win = 0\
+-if user chose Color: I do not have an algorithm for this, so I\
+simply listed all 18 red numbers. If the number rolled is not of \
+of those, then it is a black number. If user chose same outcome,\
+win = X2, else win = 0\
+-if user chose box, subtract the number rolled by 1, then divide\
+it by 13. After add 1. This would make number 1-12= 1, 13-24=2\
+and 25-36=3. If user chose correctly, win = X3, else win= 0\
+-if user chose Column, subtract number rolled by 1, divide by \
+3, then add 1 to it. This would make numbers 1-3 = 1, 4-6=2,\
+up to the number 33-36=12. If user chose same column, \
+win = X12, else win = 0\
+-if user chose Row, mod the number rolled by 3. If answer\
+is 0, make it 3, This will make any numbers in row1=1, row2=2,\
+and row3=3. If user chose same row, win = X3, else win = 0\
+***Let it be noted that aside from the Single Number bet, all\
+other 5 bet types have a (if number rolled = 0 or 00, win = 0)\
+because 0 and 00 are always excluded in every bet aside from\
+Single Number***\
+Return to main program\
+\
+-Add chips won to total chips\
+-Loop program until user enters 7 to exit or if chips = 0\
+\
+I provided 3 screenshots of some input and the output it should return. \
+In the one named Bad_Input, it shows what happens when you give an\
+ invalid input, in this case, for the menu. The program will output \'93bad input\'94 \
+and loop again. This is true for any variable the user inputs.\
+For the picture named Odd_Bet, this shows what should happen\
+when the user bets for an odd number and wins. As shown, the coins \
+betted, 10, are multiplied by 2, so 20 coins is returned.\
+In the picture If_Zero, this shows what happens when the number\
+rolled is zero. Despite me betting on the first row, I have lost. \
+This is true for 00 and holds true for any bet other than the \
+single number bet. \
+\
+   Flowcharts\
+        ***located inside folder ***\
+   Pseudo-Code\
+        Case Switch:\
+	Enter bet type choice\
+	case 1: Go to single\
+	case 2 :Go to even/odd\
+	case 3: Go to color\
+	case 4: Go to Box\
+	case 5: Go to Column\
+	case 6: Go to Row\
+	default: Goodbye\
+     if:\
+	determine number soon\
+	if spun = 1, go to red\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 	if spun = 3, go to red\
+	if spun = 5, go to red\
+	if spun = 7, go to red\
+	if spun = 9, go to red\
+	if spun = 12, go to red\
+	if spun = 14, go to red\
+	if spun = 16, go to red\
+	if spun = 18, go to red\
+	if spun = 19, go to red\
+	if spun = 21, go to red\
+	if spun = 23, go to red\
+	if spun = 25, go to red\
+	if spun = 27, go to red\
+	if spun = 30, go to red\
+	if spun = 32, go to red\
+	if spun = 34, go to red\
+	if spun = 36, go to red\
+	else, go to black\
+    do while\
+	output options\
+	initialize betType int	\
+	Enter betType\
+	if betType is less than 0, loop to top\
+	if betType > 7, loop to top\
+	else, exit loop\
+    while\
+	Initialize r0 as 0\
+	r2 and r3 will already have values\
+	while r3 > r2\
+	subtract r2 by r3 and add 1 to ro\
+	loop back to comparison\
+    if/else\
+	initialize r1\
+	enter r1\
+	if r1 = 0, goto even\
+	else if r1 = 1, goto odd\
+	else goto end\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0    Variables\
+       \
+Type     Name                 Description                          Location\
+string    message0          says hello		        main program\
+string    message1	       Asks user what do they       main program\
+			       want to bet on (bet type)\
+string    message2	       says \'93Invalid input\'94              main program\
+string    message3          Asks user for number of      main program\
+  			       chips he wants to bet\
+string    message4	       outputs chips won               main program\
+string    single_mstring   Asks what single number    main program\
+string    message_eo      Asks even or odd                main program\
+string    message_c        Ask red or black    	       main program\
+string    message_b	       Ask what Box                      main program\
+string    message_cl       Ask what Column                main program    \
+string    message_r         Ask what Row                    main program                          \
+string    message_spun  Outputs number spun         main program  \
+string    message_end    says goodbye and              main program \
+			       outputs chips left   \
+int         number_read1   user\'92s Bet Type	                 main program\
+int         number_read2   user\'92s Bet Value                 main program\
+int         number_read3   user\'92s Bet Amount              main program\
+int         no name            user\'92s Bet Vale                   stack in spin fuct\
+int 	  no name            user\'92s Bet Amount              stack in spin fuct\
+\
+\
+Language Constructs\
+\
+These contracts are found in many places. I will only be naming one\
+place where they are found. This does not mean they are no found\
+elsewhere\
+\
+Construct                    Location\
+printf			   Around like 66 in main program\
+ble			   Around line 74 in main program\
+scanf                           Around line 80 in main program\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 blt                                Around line 86 in main program\
+bgt                               Around line 89 in main program\
+bal                               Around line 92 in main program\
+beq                              Around line 103 in main program\
+sp                                Around line 19 in spin_wheel program\
+add                              Around line 42 in spin_wheel program\
+mul                              Around line 50 in spin_wheel program\
+sub                              Around line 159 in spin_wheel_program\
+   \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 References\
+\
+Originally, I used your (DR. Lehr) div/mod program to run my code. But\
+before I finished, I simply wrote the div/mod by subtraction function because\
+I was unaware we could use code that wasn\'92t ours, and the subtract method\
+was just faster to code. All code used is pretty much new and written by myself\
+\
+Program\
+   \
+\
+/* Main Program */\
+\
+.data\
+/* 0 message */\
+.balign 4\
+	message0     : .asciz "Hello and Welcome!!! \\n"\
+/* First message */\
+.balign 4\
+	message1     : .asciz " What would you like to bet on\\n 1) Single Number\\n 2) Even/Odd\\n 3) Black/Red\\n 4) Box\\n 5) Column\\n 6) Row\\n 7) Terminate Program\\n\\n "\
+/* Second message */\
+.balign 4\
+	message2     : .asciz "Invalid Input \\n"\
+/* THird message */\
+.balign 4\
+	message3    : .asciz "\\n How many chips would you like to bet?\\n Current chips = %d\\n"\
+/* Fourth message */\
+.balign 4\
+	message4    : .asciz "You have won %d chips this round\\n\\n"\
+/* Single message */\
+.balign 4\
+	single_m     : .asciz "What number would you like to bet on? \\n Enter the number 0-36 or enter 37 to bet on 00  \\n"\
+/* Even Odd message */\
+.balign 4\
+	message_eo   : .asciz "What would you like to bet on? \\n Enter 1 for odd numbers \\n Enter 2 for even numbers \\n"\
+/* Color message */\
+.balign 4\
+	message_c   : .asciz "What color would you like to bet on?\\n Enter 1 for Red\\n Enter 2 for Black\\n"\
+/* Box message */\
+.balign 4\
+	message_b   : .asciz "What box would you like to bet on?\\n 1) (Numbers 1-12)\\n 2) (Numbers 13-24)\\n 3) (Numbers 25-36)\\n"\
+/* Column message */\
+.balign 4\
+	message_cl  : .asciz "What column would you like to bet on?\\n 1) (1-3)\\n 2) (4-6)\\n 3) (7-9)\\n 4) (10-12)\\n 5) (13-15)\\n 6) (16-18)\\n 7) (19-21)\\n 8) (22-24)\\n 9) (25-27)\\n 10) (28-30)\\n 11) (31-33)\\n 12) (34-36)\\n" \
+/* Row message */\
+.balign 4\
+	message_r   : .asciz "What row would you like to bet on?\\n 1) (numbers 1,4,7,10,13,16,19,22,25,28,31,34)\\n 2) (numbers 2,5,8,11,14,17,20,23,26,29,32,35)\\n 3) (numbers 3,6,9,12,15,18,21,24,27,30,33,36)\\n"\
+/*Spun message */\
+.balign 4\
+	message_spun : .asciz "\\n ***Spinning***\\n\\n And the number is.....%d!!!\\n"\
+/* Goodbye message */\
+.balign 4\
+	message_end  : .asciz "You left the table with %d chips\\n Goodbye and thank you for playing roulette\\n"\
+\
+/* Format pattern for scanf */\
+.balign 4\
+	scan_pattern : .asciz "%d"\
+/* Where scanf will store the number read */\
+.balign 4\
+	number_read1  : .word 0\
+	number_read2  : .word 0\
+	number_read3  : .word 0\
+	number_spun   : .word 0\
+/* Returns for main and mult_by_5 */\
+.balign 4\
+	return       : .word 0\
+\
+\
+/* main function */\
+.global main\
+main:\
+\
+	ldr r1, address_of_return       /* r1 <- &address_of_return */\
+	str lr, [r1]                    /* *r1 <- lr */\
+\
+	ldr r0, address_of_message0	/* load welcome message */\
+	bl printf			/* call printf */\
+	\
+	mov r8, #100			/* Initialoze coins to 100 */\
+\
+	_coin_check:\
+	cmp r8, #0			/* if coins are less than or equal to 0 */\
+	ble _goodbye			/* terminate program */\
+	\
+	_bet_type:\
+	ldr r0, address_of_message1     /* r0 <- &message1 */\
+	bl printf                       /* call to printf */\
+\
+	ldr r0, address_of_scan_pattern /* load scan pattern */\
+	ldr r1, address_of_number_read1 /* where bet type variable will be stored */\
+	bl scanf			/* call scanf */\
+\
+	ldr r0, address_of_number_read1\
+	ldr r0, [r0]			/* Load inputed value ontp r0 */\
+\
+	cmp r0, #1\
+	blt _bad_bet_type		/* if input < 0 */\
+	cmp r0, #7\
+	bgt _bad_bet_type		/* if input > 6 */\
+\
+	/* else */\
+	bal _good_bet_type		/* good input was provided */\
+\
+	_bad_bet_type:\
+	ldr r0, address_of_message2	/* Load bad input message */\
+	bl printf			/* Call printf */\
+	bal _bet_type			/* Return bak to _bet_type and input again */\
+\
+	_good_bet_type:			/* if good input was provided */\
+\
+	/* Decide what question to ask */\
+	cmp r0, #1			/* if user chose to bet on a single number */\
+	beq _single\
+	cmp r0, #2			/* if user chose to bet on even or odd */\
+	beq _even_odd\
+	cmp r0, #3			/* if user chose to bet on a color */\
+	beq _color\
+	cmp r0, #4			/* if user chose to bet for a box */\
+	beq _box\
+	cmp r0, #5			/* if user chose to bet for a column */\
+	beq _column\
+	cmp r0, #6			/* if user chose to bet for a row */\
+	beq _row\
+	/*if 7 was inputed */\
+	bal _goodbye\
+	\
+	_single:\
+	ldr r0, address_of_single_m	/* Load single number message onto r0 */\
+	bl printf			/* call printf */\
+\
+	ldr r0, address_of_scan_pattern	/* load scan pattern */\
+	ldr r1, address_of_number_read2	/* where bet value will be stored */\
+	bl scanf			/* call scanf */\
+\
+	ldr r0, address_of_number_read2	/* load address of bet value */\
+	ldr r0, [r0] 			/* load in actual bet value onto r0 */\
+\
+	cmp r0, #0			/* if bet value input is less than 0 */\
+	blt _bad_bet_value\
+	cmp r0, #37			/* if bet value input is more than 37 */\
+	bgt _bad_bet_value\
+\
+	/* else */\
+	bal _bet_coin			/* continue and ask for bet amount */\
+\
+	_bad_bet_value:\
+	ldr r0, address_of_message2	/*load invalid input message */\
+	bl printf			/* call printf */\
+	bal _single			/* go back to _single and repeat */\
+\
+\
+	_even_odd:\
+        ldr r0, address_of_message_eo   /* Load even odd  message onto r0 */\
+        bl printf                       /* call printf */\
+\
+        ldr r0, address_of_scan_pattern /* load scan pattern */\
+        ldr r1, address_of_number_read2 /* where bet value will be stored */\
+        bl scanf                        /* call scanf */\
+\
+        ldr r0, address_of_number_read2 /* load address of bet value */\
+        ldr r0, [r0]                    /* load in actual bet value onto r0 */\
+\
+        cmp r0, #0                      /* if bet value input is less than or equal to 0 */\
+        ble _bad_bet_value_eo\
+        cmp r0, #2			/* if bet value is more than 2 */\
+        bgt _bad_bet_value_eo\
+\
+        /* else */\
+        bal _bet_coin                   /* continue and ask for bet amount */\
+\
+        _bad_bet_value_eo:\
+        ldr r0, address_of_message2     /*load invalid input message */\
+        bl printf                       /* call printf */\
+        bal _even_odd                   /* go back to _even_odd and repeat */\
+\
+	_color:\
+        ldr r0, address_of_message_c    /* Load color  message onto r0 */\
+        bl printf                       /* call printf */\
+\
+        ldr r0, address_of_scan_pattern /* load scan pattern */\
+        ldr r1, address_of_number_read2 /* where bet value will be stored */\
+        bl scanf                        /* call scanf */\
+\
+        ldr r0, address_of_number_read2 /* load address of bet value */\
+        ldr r0, [r0]                    /* load in actual bet value onto r0 */\
+\
+        cmp r0, #0                      /* if bet value input is less than or equal to 0 */\
+        ble _bad_bet_value_c\
+        cmp r0, #2			/* if bet value is greater than 2 */\
+        bgt _bad_bet_value_c\
+\
+        /* else */\
+        bal _bet_coin                   /* continue and ask for bet amount */\
+\
+        _bad_bet_value_c:\
+        ldr r0, address_of_message2     /*load invalid input message */\
+        bl printf                       /* call printf */\
+        bal _color                      /* go back to _color and repeat */\
+\
+	 _box:\
+        ldr r0, address_of_message_b    /* Load even box  message onto r0 */\
+        bl printf                       /* call printf */\
+\
+        ldr r0, address_of_scan_pattern /* load scan pattern */\
+        ldr r1, address_of_number_read2 /* where bet value will be stored */\
+        bl scanf                        /* call scanf */\
+\
+        ldr r0, address_of_number_read2 /* load address of bet value */\
+        ldr r0, [r0]                    /* load in actual bet value onto r0 */\
+\
+        cmp r0, #0                      /* if bet value input is less than or equal to 0 */\
+        ble _bad_bet_value_b\
+        cmp r0, #3                      /* if bet value is more than 3 */\
+        bgt _bad_bet_value_b\
+\
+        /* else */\
+        bal _bet_coin                   /* continue and ask for bet amount */\
+\
+        _bad_bet_value_b:\
+        ldr r0, address_of_message2     /*load invalid input message */\
+        bl printf                       /* call printf */\
+        bal _box                        /* go back to _box and repeat */\
+\
+	_column:\
+        ldr r0, address_of_message_cl   /* Load column message onto r0 */\
+        bl printf                       /* call printf */\
+\
+        ldr r0, address_of_scan_pattern /* load scan pattern */\
+        ldr r1, address_of_number_read2 /* where bet value will be stored */\
+        bl scanf                        /* call scanf */\
+\
+        ldr r0, address_of_number_read2 /* load address of bet value */\
+        ldr r0, [r0]                    /* load in actual bet value onto r0 */\
+\
+        cmp r0, #0                      /* if bet value input is less than or equal to 0 */\
+        ble _bad_bet_value_cl\
+        cmp r0, #12                     /* if bet value is more than 12 */\
+        bgt _bad_bet_value_cl\
+\
+        /* else */\
+        bal _bet_coin                   /* continue and ask for bet amount */\
+\
+        _bad_bet_value_cl:\
+        ldr r0, address_of_message2     /*load invalid input message */\
+        bl printf                       /* call printf */\
+        bal _column                     /* go back to _column and repeat */\
+\
+\
+	  _row:\
+        ldr r0, address_of_message_r    /* Load row message onto r0 */\
+        bl printf                       /* call printf */\
+\
+        ldr r0, address_of_scan_pattern /* load scan pattern */\
+        ldr r1, address_of_number_read2 /* where bet value will be stored */\
+        bl scanf                        /* call scanf */\
+\
+        ldr r0, address_of_number_read2 /* load address of bet value */\
+        ldr r0, [r0]                    /* load in actual bet value onto r0 */\
+\
+        cmp r0, #0                      /* if bet value input is less than or equal to 0 */\
+        ble _bad_bet_value_r\
+        cmp r0, #3                      /* if bet value is more than 3 */\
+        bgt _bad_bet_value_r\
+\
+        /* else */\
+        bal _bet_coin                   /* continue and ask for bet amount */\
+\
+        _bad_bet_value_r:\
+        ldr r0, address_of_message2     /*load invalid input message */\
+        bl printf                       /* call printf */\
+        bal _row                        /* go back to _row and repeat */\
+\
+	/* Ask how much coin the user will bet */\
+\
+	_bet_coin:\
+\
+	ldr r0, address_of_message3	/* load bet amount message */\
+	mov r1, r8			/* use user coins as the printf parameter */\
+	bl printf			/* call print */\
+\
+	ldr r0, address_of_scan_pattern	/* load scan pattern */\
+	ldr r1, address_of_number_read3	/* where bet amount will be stored */\
+	bl scanf			/* call scanf */\
+\
+	ldr r0, address_of_number_read3	/* load in value inputed for bet amount */\
+	ldr r0, [r0]\
+\
+	cmp r0, #0			/* if bet amount is less than or equal to 0 */\
+	ble _bad_bet_amount\
+	cmp r0, r8			/* if bet amount is greater than chip amount */\
+	bgt _bad_bet_amount\
+\
+	/* else */\
+	bal _good_bet_amount\
+\
+	_bad_bet_amount:\
+	ldr r0, address_of_message2	/* load invlaid input message */\
+	bl printf			/* call printf */\
+	bal _bet_coin 			/* return to _bet_coin and ask again */\
+\
+	_good_bet_amount:\
+\
+	/* All 3 inputs are valid */\
+\
+	/* calculate ranom spun number */\
+	mov r0,#0                    /* Set time(0) */\
+        bl time                      /* Call time */\
+	bl srand                     /* Call srand */\
+	bl rand                      /* Call rand */\
+	mov r1,r0,ASR #1             /* In case random return is negative */\
+	mov r2, r1			/* move random number into r2 */\
+	mov r3, #38			/* move number random number will be modded by */\
+	bl div_mod				/* Go to mod to find number 0-37 */\
+	/* After, r1 contains the number 0-37 */\
+	mov r9, r1			/* r9 will hold the number rolled */\
+	mov r1, r9			/* move number spun to printf parameter */\
+	ldr r0, address_of_message_spun\
+	bl printf			/* call printf */\
+\
+	/* Move all 3 inputs user provided into registers 1-3 */\
+	ldr r3, address_of_number_read1	/* Load bet type onto r3 */\
+	ldr r3, [r3]\
+	ldr r2, address_of_number_read2	/* Load bet value onto r2 */\
+	ldr r2, [r2]\
+	ldr r1, address_of_number_read3	/* Load bet amount onto r1 */\
+	ldr r1, [r1]\
+	mov r0, r9			/* move into r0 the number spun */\
+	sub r8, r8, r1			/* total chips = total chips minus bet amount */\
+	bl spin_wheel			/* ***Spin Wheel*** */\
+	/* output coins won by previous bet */\
+	add r8, r8, r1   		/* add coins won to total coins */\
+	ldr r0, address_of_message4	/* load coins won message */\
+	bl printf			/* call printf */\
+\
+\
+	bal _coin_check			/* check if user still has coins by going back to top of program */\
+\
+	_goodbye:\
+	mov r1, r8			/* move chip amount into printf parameter */\
+	ldr r0, address_of_message_end\
+	bl printf			/* call printf */\
+\
+	ldr lr, address_of_return       /* lr <- &address_of_return */\
+	ldr lr, [lr]                    /* lr <- *lr */\
+bx lr   				/* return from main using lr */\
+\
+/* References */\
+address_of_message0	 : .word message0\
+address_of_message1      : .word message1\
+address_of_message2      : .word message2\
+address_of_message3	 : .word message3\
+address_of_message4	 : .word message4\
+address_of_scan_pattern  : .word scan_pattern\
+address_of_number_read1  : .word number_read1\
+address_of_number_read2  : .word number_read2\
+address_of_number_read3  : .word number_read3\
+address_of_number_spun	 : .word number_spun\
+address_of_return        : .word return\
+address_of_single_m	 : .word single_m\
+address_of_message_eo	 : .word message_eo\
+address_of_message_c	 : .word message_c\
+address_of_message_b	 : .word message_b\
+address_of_message_cl	 : .word message_cl\
+address_of_message_r	 : .word message_r\
+address_of_message_spun  : .word message_spun\
+address_of_message_end	 : .word message_end\
+/* External */\
+.global printf\
+.global scanf\
+.global time\
+.global srand\
+.global rand\
+\
+\
+/* Spin_Wheel */\
+\
+.data\
+/* none */\
+ \
+.text\
+ \
+.globl spin_wheel\
+spin_wheel:\
+	str lr, [sp,#-4]!               /* Push lr onto the top of the stack */\
+	str r1, [sp,#-4]!		/* store bet amount at top of stack */\
+	str r2, [sp,#-4]!		/* store bet value on top of stack */\
+\
+	cmp r3, #1			/* if user bet for single number */\
+	beq _b_single\
+	cmp r3, #2			/* if user bet for even/odd */\
+	beq _b_even_odd\
+	cmp r3, #3			/* if user bet for color */\
+	beq _b_color\
+	cmp r3, #4			/* if user bet for box */\
+	beq _b_box\
+	cmp r3, #5			/* if user brt for column */\
+	beq _b_column\
+	cmp r3, #6			/* if user bet on row */\
+	beq _b_row\
+\
+	bal _spin_done\
+\
+	/* At this point, r0= number spun, r1=bet amount, r2=bet value, r3=bet type */\
+\
+	_b_single:\
+	add sp, sp, #+4                 /* discard bet value from stack */\
+        add sp, sp, #+4                 /* discard bet amount from stack */\
+	cmp r0, r2			/* if number spun = number chosen */\
+	beq _win_single			/* won single number bet */\
+	/* else */\
+	mov r3, #0			/* coins won = 0 */\
+	bal _spin_done\
+	_win_single:\
+	mov r2, #36			/* win payoff is X36 */\
+	mul r3 ,r1, r2			/* multiply bet amount by 36 and store onto r0 */\
+	bal _spin_done\
+\
+	_b_even_odd:\
+	mov r2, r0			/* move the number spun into r2 */\
+	mov r3, #2			/* number the number spun will be div/moded by */\
+	bl div_mod\
+\
+	ldr r0, [sp]			/* load bet value onto r0 */\
+	add sp, sp, #+4                 /* Discard the bet value we kept in the stack */\
+\
+	cmp r1, #0			/* if number spun is even */\
+	beq _is_even\
+	cmp r1, #1			/* if number spun is odd */\
+	beq _is_odd\
+	bal _spin_done\
+	_is_even:\
+	cmp r0, #2			/* if user bet even */\
+	beq _win_even_odd\
+	/* else */\
+        add sp, sp, #+4                 /* Discard the bet amount we kept in the stack */\
+	mov r3, #0			/* coins won = 0 */\
+	bal _spin_done\
+	_is_odd:\
+	cmp r0, #1			/* if user bet odd */\
+	beq _win_even_odd\
+	/* else */\
+        add sp, sp, #+4                 /* Discard the bet amount we kept in the stack */\
+	mov r3, #0			/* coins won = 0 */\
+	bal _spin_done\
+	_win_even_odd:\
+	ldr r0, [sp]			/* load r0 with bet amount */\
+	mov r1, #2			/* win payoff is X2 */\
+	mul r3, r0, r1			/* multiply bet amount by 2 */\
+	add sp, sp, #+4                 /* Discard the bet amount we kept in the stack */\
+	bal _spin_done			/*finished */\
+\
+	_b_color:\
+	cmp r0, #0                      /* if number spun = 0 */\
+        beq _zero_double_zero\
+        cmp r0, #37                     /* if number spun = 00 */\
+        beq _zero_double_zero\
+	/* really borring way to determine color but there is no good definate color pattern so oh well */\
+	cmp r0, #1			/* if number is red */\
+	beq _is_red\
+	cmp r0, #3                      /* if number is red */\
+        beq _is_red\
+	cmp r0, #5                      /* if number is red */\
+        beq _is_red\
+	cmp r0, #7                      /* if number is red */\
+        beq _is_red\
+	cmp r0, #9                      /* if number is red */\
+        beq _is_red\
+        cmp r0, #12                     /* if number is red */\
+        beq _is_red\
+        cmp r0, #14                     /* if number is red */\
+        beq _is_red\
+        cmp r0, #16                     /* if number is red */\
+        beq _is_red\
+	cmp r0, #18                     /* if number is red */\
+        beq _is_red\
+        cmp r0, #19                     /* if number is red */\
+        beq _is_red\
+        cmp r0, #21                     /* if number is red */\
+        beq _is_red\
+        cmp r0, #23                     /* if number is red */\
+        beq _is_red\
+	cmp r0, #25                     /* if number is red */\
+        beq _is_red\
+        cmp r0, #27                     /* if number is red */\
+        beq _is_red\
+        cmp r0, #30                     /* if number is red */\
+        beq _is_red\
+        cmp r0, #32                     /* if number is red */\
+        beq _is_red\
+	cmp r0, #34                     /* if number is red */\
+        beq _is_red\
+        cmp r0, #36                     /* if number is red */\
+        beq _is_red\
+  	/* else, its black */\
+	bal _is_black\
+	_is_red:\
+	mov r0, #1			/* rolled color is red */\
+	bal _continue_color\
+	_is_black:\
+	mov r0, #2			/* rolled color is black */\
+	bal _continue_color\
+	_continue_color:\
+	ldr r1, [sp]			/* load r1 with bet value */\
+	add sp, sp, #+4			/* discard bet value from stack */\
+	cmp r0, r1			/* if rolled color = chosen color */\
+	beq _win_color\
+	/* else */\
+	add sp, sp, #+4			/* discard bet amount from stack */\
+	mov r3, #0			/* coins won = 0 */\
+	bal _spin_done\
+	_win_color:\
+	ldr r0, [sp]			/* load r0 with bet amount */\
+	add sp, sp, #+4			/* discard bet amount from stack */\
+	mov r1, #2			/* win payoff is X2 */\
+	mul r3, r0, r1			/* multiply bet amount by 2 */\
+	bal _spin_done\
+\
+	_b_box:\
+	cmp r0, #0			/* if number spun = 0 */\
+	beq _zero_double_zero\
+	cmp r0, #37			/* if number spun = 00 */\
+	beq _zero_double_zero\
+	/* else */\
+	sub r0, r0, #1			/* subtract number rolled by 1 */\
+	mov r2, r0			/* move into r2 number rolled -1 */\
+	mov r3, #12			/* move 12 into r3 to mod number */\
+	bl div_mod			/* divide */\
+\
+	add r0, r0, #1			/* add 1 to diveded answer */\
+	ldr r1, [sp]			/* load r1 with bet value */\
+	add sp, sp, #+4			/* Discard the bet value we kept in the stack */\
+\
+	cmp r0, r1			/* if box spun = box chosen */\
+	beq _win_box\
+	/* else */\
+	add sp, sp, #+4			/* discard bet amount we kept in the stack */\
+	mov r3, #0			/* coins won = 0 */\
+	bal _spin_done\
+	_win_box:\
+	ldr r0, [sp]			/* load r0 with bet amount */\
+	mov r1, #3			/* win payoff is X3 */\
+	mul r3, r0, r1			/* multiply bet amount by 3 */\
+	add sp, sp, #+4			/* discard bet amount we kept in the stack */\
+	bal _spin_done\
+\
+	_b_column:\
+        cmp r0, #0                      /* if number spun = 0 */\
+        beq _zero_double_zero\
+        cmp r0, #37                     /* if number spun = 00 */\
+	/* else */\
+	sub r0, r0, #1			/* subtract r0 by 1 */\
+	mov r2, r0			/* move number rolled -1 into r2 */\
+	mov r3, #3			/* move 3 into r3 to divide be 3 */\
+	bl div_mod			/* divide */\
+\
+	add r0, r0, #1			/* add 1 to divided answer */\
+	ldr r1, [sp]			/* load r1 with bet value */\
+	add sp, sp, #+4			/* discard bet value from stack */\
+\
+	cmp r0, r1			/* if column spun = column chosen */\
+	beq _win_column\
+	/* else */\
+	add sp, sp, #+4			/* remove bet amount from stack */\
+	mov r3, #0			/* coins won = 0 */\
+	bal _spin_done\
+	_win_column:\
+	ldr r0, [sp]			/* load r0 with bet amount */\
+	mov r1, #12			/* win payoff is X12 */\
+	mul r3, r0, r1			/* multiply bet amount by 12 */\
+	add sp, sp, #+4			/* discard bet amount from stack */\
+	bal _spin_done\
+\
+	_b_row:\
+	mov r2, r0			/* move into r2 the number spun */\
+	mov r3, #3			/* move into r3 3 to get the mod */\
+	bl div_mod			/* modual */\
+\
+	cmp r1, #0			/* if modded answer = 0 */\
+	beq _row_3\
+	bal _continue_row		/* else, continue */\
+	_row_3:\
+	mov r1, #3			/* rolled number is in 3rd row */\
+	bal _continue_row\
+	_continue_row:\
+	ldr r0, [sp]			/* load bet value onto r0 */\
+	add sp, sp, #+4			/* discard bet value from stack */\
+	cmp r0, r1			/* if row rolled = row chosen */\
+	beq _win_row\
+	/* else */\
+	add sp, sp, #+4			/* discard bet amount from stack */\
+	mov r3, #0			/* coins won = 0 */\
+	bal _spin_done\
+	_win_row:\
+	ldr r0, [sp]			/* load bet amount to r0 */\
+	add sp, sp, #+4			/* discard bet amount from stack */\
+	mov r1, #3			/* win payoff is X3 */\
+	mul r3, r0, r1			/* multiply bet amount by 3 */\
+	bal _spin_done\
+\
+	_zero_double_zero:\
+	add sp, sp, #+4                 /* Discard the bet value we kept in the stack */\
+        add sp, sp, #+4                 /* Discard the bet amount we kept in the stack */\
+	mov r3, #0			/* coins won = 0 */\
+\
+	_spin_done:\
+\
+	mov r1, r3			/* move coins won into r1 */\
+        ldr lr, [sp], #+4               /* Pop the top of the stack and put it in lr */\
+        bx lr                           /* Leave main */\
+\
+/* Mod/Division Function */\
+\
+.global div_mod\
+div_mod:\
+\
+ str lr, [sp,#-4]!            /* Push lr onto the top of the stack */\
+\
+mov R0, #0 @Initializes  times divided to 0\
+\
+_while_R2_ge_R3: @ while the dividen is greater than or equal to the divisor\
+\
+cmp R2, R3\
+blt _output @ exit loop if the Dividen is less than the divisor\
+sub R2, R2, R3 @R2 = R2 - R3\
+add R0, #1\
+bal _while_R2_ge_R3\
+\
+_output:\
+\
+/* r0 contains divided answer */\
+mov r1, r2		     /* r1 contains remainder */\
+\
+ldr lr, [sp], #+4            /* Pop the top of the stack and put it in lr */\
+    bx lr                    /* Leave main */\
+}

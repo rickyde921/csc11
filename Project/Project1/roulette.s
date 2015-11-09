@@ -1,5 +1,5 @@
 
-/* -- Example Program _ V1 */
+/* Main Program */
 
 .data
 /* 0 message */
@@ -260,7 +260,7 @@ main:
         bl printf                       /* call printf */
         bal _row                        /* go back to _row and repeat */
 
-/* Ask how much coin the user will bet */
+	/* Ask how much coin the user will bet */
 
 	_bet_coin:
 
@@ -332,7 +332,7 @@ main:
 
 	ldr lr, address_of_return       /* lr <- &address_of_return */
 	ldr lr, [lr]                    /* lr <- *lr */
-bx lr                               /* return from main using lr */
+bx lr   				/* return from main using lr */
 
 /* References */
 address_of_message0	 : .word message0

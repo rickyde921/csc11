@@ -1,0 +1,6 @@
+Type make to run all programs 
+
+ps. Im not to sure how to make makefiles.
+The one im using works and runs fine, just gives 
+the error makefile:3: recipe for target 'all' failed
+make: *** [all] Error 78    after executing

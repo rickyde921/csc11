@@ -1,30 +1,18 @@
-/* LALALALA */
+/* Spin_Wheel */
 
 .data
-/* First message */
-.balign 4 
-	message1: .asciz "***Spinning Wheel***\n "
-format:   .asciz "%d"
-message2: .asciz "***Spinning***\n\n And the number is.....%!!!\n"
+/* none */
  
 .text
  
 .globl spin_wheel
 spin_wheel:
-	 str lr, [sp,#-4]!              /* Push lr onto the top of the stack */
- /*   sub sp, sp, #4  */                /* Make room for one 4 byte integer in the stack */
-                                        /* In these 4 bytes we will keep the number */
-                                        /* entered by the user */
-                                        /* Note that after that the stack is 8-byte aligned */
-/*	 ldr r0, address_of_message1 */   /* Set &message1 as the first parameter of printf */
-/*	 bl printf  */                    /* Call printf */
- 
-
+	str lr, [sp,#-4]!               /* Push lr onto the top of the stack */
 	str r1, [sp,#-4]!		/* store bet amount at top of stack */
 	str r2, [sp,#-4]!		/* store bet value on top of stack */
 
 	cmp r3, #1			/* if user bet for single number */
-	beq _b_single	
+	beq _b_single
 	cmp r3, #2			/* if user bet for even/odd */
 	beq _b_even_odd
 	cmp r3, #3			/* if user bet for color */
@@ -36,7 +24,7 @@ spin_wheel:
 	cmp r3, #6			/* if user bet on row */
 	beq _b_row
 
-	bal _bye
+	bal _spin_done
 
 	/* At this point, r0= number spun, r1=bet amount, r2=bet value, r3=bet type */
 
@@ -235,8 +223,6 @@ spin_wheel:
 	mul r3, r0, r1			/* multiply bet amount by 3 */
 	bal _spin_done
 
-	_bye:
-
 	_zero_double_zero:
 	add sp, sp, #+4                 /* Discard the bet value we kept in the stack */
         add sp, sp, #+4                 /* Discard the bet amount we kept in the stack */
@@ -244,12 +230,7 @@ spin_wheel:
 
 	_spin_done:
 
-/*	add sp, sp, #+4			/* Discard the bet value we kept in the stack */
-/*	add sp, sp, #+4			/* Discard the bet amount we kept in the stack */
-	MOV r1, r3			/* move coins won into r1 */
+	mov r1, r3			/* move coins won into r1 */
         ldr lr, [sp], #+4               /* Pop the top of the stack and put it in lr */
         bx lr                           /* Leave main */
 
-address_of_message1: .word message1
-address_of_message2: .word message2
-address_of_format: .word format
